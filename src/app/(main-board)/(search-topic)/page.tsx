@@ -21,7 +21,7 @@ const SearchPage = () => {
             <div className='w-full mt-5 grid gap-4 grid-cols-3'>
             {topics.map((topic, index) => 
                 <motion.div
-                    id={`${index}`} 
+                    key={`${index}`} 
                     className='h-44 flex justify-center 
                                items-center rounded-lg text-3xl 
                                font-bold hover:cursor-pointer bg-gradient-to-tl 

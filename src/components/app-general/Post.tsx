@@ -17,7 +17,7 @@ const Post = ({
 
     return (
         <motion.div 
-            id={`${index}`} 
+            key={`${index}`} 
             className='bg-white rounded-lg p-4 my-2'
             whileHover={{scale:1.05}}
         >
