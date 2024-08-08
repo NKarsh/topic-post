@@ -4,7 +4,7 @@ export default function MainBoardLayout({
     children: React.ReactNode;
   }>) {
     return (
-      <div>
+      <div className="flex justify-center items-center mt-20 w-full">
         {children}
       </div>
     );
