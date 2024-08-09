@@ -4,18 +4,40 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const SearchPage = () => {
-    const [topics, setTopics] = useState<string[]>(['Food', 'Style', 'Habbits', 'Food', 'Style', 'Habbits']);
+    const [topics, setTopics] = useState<string[]>([]);
     const [keywords, setKeywords] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+
+    useEffect(() => {
+        const fetchTopics = async () => {
+            try {
+              const response = await fetch('/api/topics');
+              if (!response.ok) {
+                throw new Error('Failed to fetch topics');
+              }
+              const data: string[] = await response.json();
+              setTopics(data);
+            } catch (error: any) {
+              setError(error.message);
+            } finally {
+              setLoading(false);
+            }
+        }; 
+
+        if(topics.length === 0)
+            fetchTopics();
+    }, [topics])
 
     return (
         <div className='w-[40rem]'>
             <div className='flex'>
                 <Input value={keywords} onChange={(v) => setKeywords(v.target.value)} className='focus-visible:ring-[#6F47FA] w-full'/>
-                <Button onClick={() => router.push(`/topic?topic=${keywords}`)} className='bg-[#6F47FA] ml-2'>Search</Button>
+                <Button onClick={() => router.push(`/${keywords}`)} className='bg-[#6F47FA] ml-2'>Search</Button>
             </div>
 
             <div className='w-full mt-5 grid gap-4 grid-cols-3'>

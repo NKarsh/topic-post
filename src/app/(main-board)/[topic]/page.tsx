@@ -10,9 +10,10 @@ import Post from '@/components/app-general/Post';
 import { ArrowLeft } from 'lucide-react';
 import usePosts from '@/hooks/usePosts';
 
-function formatUrlPath(urlPath:string) {
+function formatUrlPath(url:string) {
+  const urlPath = decodeURIComponent(url).trim();
   const trimmedPath = urlPath.startsWith('/') ? urlPath.slice(1) : urlPath;
-  const formattedPath = trimmedPath.charAt(0).toUpperCase() + trimmedPath.slice(1);
+  const formattedPath = trimmedPath.charAt(0).toUpperCase() + trimmedPath.slice(1).toLocaleLowerCase();
   return formattedPath;
 }
 
@@ -48,7 +49,7 @@ const TopicPage = () => {
 
     if (response.ok) {
       const newPost: PostInterface = await response.json();
-      setLocalPosts([...posts, newPost]); 
+      setLocalPosts([...localPosts, newPost]); 
       setTitleKeywords('');
       setContentKeywords('');
       setUploadError('')
@@ -124,7 +125,7 @@ const TopicPage = () => {
         </div>
 
         <div className='mt-3 h-96'>
-            {posts.length === 0 ? 
+            {localPosts.length === 0 ? 
             <div className='w-full animate-pulse text-white flex justify-center'>
                 No Posts In This Topic Yet
             </div>:            
