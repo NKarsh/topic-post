@@ -22,15 +22,15 @@ const Post = ({
       whileHover={{ scale: 1.05 }}
     >
       <div className="flex w-full justify-center">
-        <div className="font-bold text-lg">{post.title}</div>
+        <div className="font-bold text-lg w-full">{post.title}</div>
         <div className="text-sm flex justify-end w-full">
-          {post.date.toString()}
+          {new Date(post.date).toDateString()}
         </div>
       </div>
-      <div>{post.content}</div>
+      <div className="mt-2">{post.content}</div>
       <div
         className={cn(
-          "flex mt-2 hover:cursor-pointer w-fit select-none",
+          "flex mt-3 hover:cursor-pointer w-fit select-none",
           applause ? "text-red-500" : "text-black"
         )}
         onClick={() => {

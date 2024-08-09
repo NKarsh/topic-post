@@ -88,10 +88,13 @@ const TopicPage = () => {
     }
   }, [localPosts, loading]);
 
-  if (loading) return <div>Loading...</div>;
-
-  if (topic.trim() === "")
-    return <div className="w-[40rem]">No Topic Found</div>;
+  if (loading)
+    return (
+      <div className="text-white flex items-center">
+        Loading topic &nbsp;
+        <div className="w-5 h-5 rounded-full border-2 border-dotted animate-spin" />
+      </div>
+    );
 
   return (
     <div className="w-[40rem]">
