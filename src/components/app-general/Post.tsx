@@ -17,7 +17,7 @@ const Post = ({
 
     return (
         <motion.div 
-            key={`${index}`} 
+            key={index}
             className='bg-white rounded-lg p-4 my-2'
             whileHover={{scale:1.05}}
         >
@@ -26,7 +26,7 @@ const Post = ({
                     {post.title}
                 </div>
                 <div className='text-sm flex justify-end w-full'>
-                    {post.date.toDateString()}
+                    {post.date.toString()}
                 </div>
             </div>
             <div>

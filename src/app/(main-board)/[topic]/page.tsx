@@ -3,46 +3,74 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Post as PostInterface } from '@/types';
 import Post from '@/components/app-general/Post';
 import { ArrowLeft } from 'lucide-react';
+import usePosts from '@/hooks/usePosts';
 
-
+function formatUrlPath(urlPath:string) {
+  const trimmedPath = urlPath.startsWith('/') ? urlPath.slice(1) : urlPath;
+  const formattedPath = trimmedPath.charAt(0).toUpperCase() + trimmedPath.slice(1);
+  return formattedPath;
+}
 
 const TopicPage = () => {
-  const searchParams = useSearchParams();
+  const topic = formatUrlPath(usePathname());
   const router = useRouter();
-  const [topic, setTopic] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [posts, setPosts] = useState<PostInterface[]>([]);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const { posts, loading, error } = usePosts(topic);
+  const [uploadError, setUploadError] = useState<string>('');
+  const [localPosts, setLocalPosts] = useState<PostInterface[]>([]);
   const [titleKeywords, setTitleKeywords] = useState<string>('');
   const [contentKeywords, setContentKeywords] = useState<string>('');
 
   const updateApplause = (index: number) => {
-    setPosts((prevPosts) =>
+    setLocalPosts((prevPosts) =>
       prevPosts.map((post, i) =>
         i === index ? { ...post, applause: post.applause + 1 } : post
       )
     );
   };
 
-  useEffect(() => {
-    const topicParam = searchParams.get('topic');
+  const handleSubmit = async (e: React.FormEvent) => {
+    setIsUploading(true)
+    e.preventDefault();
 
-    if (topicParam) {
-      setTopic(topicParam);
+    const response = await fetch('/api/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ title:titleKeywords, content:contentKeywords, topic }),
+    });
+
+    if (response.ok) {
+      const newPost: PostInterface = await response.json();
+      setLocalPosts([...posts, newPost]); 
+      setTitleKeywords('');
+      setContentKeywords('');
+      setUploadError('')
+    } else {
+      const res = await response.json();
+      setUploadError(res.message)
+      console.error('Failed to create post');
     }
 
-    setIsLoading(false);
+    setIsUploading(false);
+  };
 
-  }, [searchParams]);
+  useEffect(() => {
+    if(!loading && localPosts.length === 0) {
+      setLocalPosts(posts)
+    }
+  }, [localPosts, loading])
 
-  if(isLoading)
+  if(loading)
     return (
         <div>
-
+          Loading...
         </div>
     )
 
@@ -86,7 +114,11 @@ const TopicPage = () => {
                     placeholder='Write anything'/>
             </div>
             
-            <Button className='bg-[#6F47FA]'>
+            <div hidden={uploadError === ''} className='text-sm text-red-600'>
+              {uploadError}
+            </div>
+
+            <Button disabled={isUploading} className='bg-[#6F47FA]' onClick={handleSubmit}>
                 Submit
             </Button>
         </div>
@@ -96,8 +128,8 @@ const TopicPage = () => {
             <div className='w-full animate-pulse text-white flex justify-center'>
                 No Posts In This Topic Yet
             </div>:            
-            posts.map((post, index) => 
-                <Post index={index} post={post} applauseUpdate={updateApplause}/>
+            localPosts.map((post, index) => 
+                <Post key={index} index={index} post={post} applauseUpdate={updateApplause}/>
             )}
         </div>
     </div>
