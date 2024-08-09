@@ -5,32 +5,19 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
+import useTopics from "@/hooks/useTopics";
 
 const SearchPage = () => {
-  const [topics, setTopics] = useState<string[]>([]);
   const [keywords, setKeywords] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const { topics, loading, error } = useTopics();
+  const [localTopics, setLocalTopics] = useState<string[]>([]);
   const router = useRouter();
 
   useEffect(() => {
-    const fetchTopics = async () => {
-      try {
-        const response = await fetch("/api/topics");
-        if (!response.ok) {
-          throw new Error("Failed to fetch topics");
-        }
-        const data: string[] = await response.json();
-        setTopics(data);
-      } catch (error: any) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (topics.length === 0) fetchTopics();
-  }, [topics]);
+    if (!loading && localTopics.length === 0) {
+      setLocalTopics(topics);
+    }
+  }, [localTopics, loading]);
 
   return (
     <div className="w-[40rem]">
