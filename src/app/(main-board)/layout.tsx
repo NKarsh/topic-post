@@ -11,7 +11,7 @@ export default function MainBoardLayout({
           write about any topic you want
         </div>
       </div>
-      <div className="flex justify-center items-center mt-5 w-full p-6">
+      <div className="flex justify-center items-center w-full p-6">
         {children}
       </div>
     </div>
