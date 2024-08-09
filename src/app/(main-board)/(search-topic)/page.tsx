@@ -42,11 +42,11 @@ const SearchPage = () => {
         </div>
       ) : (
         <div className="w-full mt-5 grid gap-2 sm:gap-3 grid-cols-3">
-          {topics.map((topic, index) => (
+          {localTopics.map((topic, index) => (
             <motion.div
               key={index}
               className="sm:h-44 h-24 flex justify-center 
-                         items-center rounded-lg sm:text-3xl 
+                         items-center rounded-lg text-lg sm:text-3xl 
                          font-bold hover:cursor-pointer bg-gradient-to-tl 
                          from-[#6F47FA] via-[#FFAEEB] to-white 
                          bg-[length:300%_300%] select-none"
