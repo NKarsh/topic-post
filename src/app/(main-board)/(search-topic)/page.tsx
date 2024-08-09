@@ -14,7 +14,7 @@ const SearchPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && localTopics.length === 0) {
+    if (!loading) {
       setLocalTopics(topics);
     }
   }, [localTopics, loading]);
