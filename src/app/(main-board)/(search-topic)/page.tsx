@@ -9,7 +9,7 @@ import useTopics from "@/hooks/useTopics";
 
 const SearchPage = () => {
   const [keywords, setKeywords] = useState<string>("");
-  const { topics, loading, error } = useTopics();
+  const { topics, loading, error, fetchTopics } = useTopics();
   const [localTopics, setLocalTopics] = useState<string[]>([]);
   const router = useRouter();
 
@@ -17,6 +17,8 @@ const SearchPage = () => {
     if (!loading) {
       setLocalTopics([...topics]);
     }
+
+    fetchTopics();
   }, [loading, topics]);
 
   return (
