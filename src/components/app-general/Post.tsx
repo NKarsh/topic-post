@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Post as PostInterface } from "@/types";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { HeartHandshake } from "lucide-react";
 import React, { useState } from "react";
 
@@ -14,7 +14,12 @@ const Post = ({
   applauseUpdate: Function;
 }) => {
   const [applause, setApplause] = useState<boolean>(false);
+  const [showHeart, setShowHeart] = useState<boolean>(false);
 
+  const handleButtonClick = () => {
+    setShowHeart(true);
+    setTimeout(() => setShowHeart(false), 2000); // Hide heart after 2 seconds
+  };
   return (
     <motion.div
       key={index}
@@ -30,17 +35,32 @@ const Post = ({
       <div className="mt-2">{post.content}</div>
       <div
         className={cn(
-          "flex mt-3 hover:cursor-pointer w-fit select-none",
+          "flex mt-3 hover:cursor-pointer w-fit select-none items-center",
           applause ? "text-red-500" : "text-black"
         )}
         onClick={() => {
           setApplause(true);
           applauseUpdate(index);
+          handleButtonClick();
         }}
       >
         <HeartHandshake />
         &nbsp;
         {post.applause}
+        &nbsp;
+        <AnimatePresence>
+          {showHeart && (
+            <motion.div
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -50, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className=""
+            >
+              ❤️
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.div>
   );

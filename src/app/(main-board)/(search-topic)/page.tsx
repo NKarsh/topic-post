@@ -15,9 +15,9 @@ const SearchPage = () => {
 
   useEffect(() => {
     if (!loading) {
-      setLocalTopics(topics);
+      setLocalTopics([...topics]);
     }
-  }, [localTopics, loading]);
+  }, [loading, topics]);
 
   return (
     <div className="w-[40rem]">
@@ -46,7 +46,7 @@ const SearchPage = () => {
             <motion.div
               key={index}
               className="sm:h-44 h-24 flex justify-center 
-                         items-center rounded-lg text-lg sm:text-3xl 
+                         items-center rounded-lg sm:text-3xl 
                          font-bold hover:cursor-pointer bg-gradient-to-tl 
                          from-[#6F47FA] via-[#FFAEEB] to-white 
                          bg-[length:300%_300%] select-none"

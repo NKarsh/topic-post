@@ -9,6 +9,7 @@ import { Post as PostInterface } from "@/types";
 import Post from "@/components/app-general/Post";
 import { ArrowLeft } from "lucide-react";
 import usePosts from "@/hooks/usePosts";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 function formatUrlPath(url: string) {
   const urlPath = decodeURIComponent(url).trim();
@@ -109,7 +110,7 @@ const TopicPage = () => {
         {topic}
       </div>
 
-      <div className="bg-white p-4 rounded-lg grid gap-2 mt-3">
+      <motion.div className="bg-white p-4 rounded-lg grid gap-2 mt-3">
         <div>
           <Label>Title</Label>
           <Input
@@ -143,7 +144,7 @@ const TopicPage = () => {
         >
           Submit
         </Button>
-      </div>
+      </motion.div>
 
       <div className="mt-3 h-96">
         {localPosts.length === 0 ? (
