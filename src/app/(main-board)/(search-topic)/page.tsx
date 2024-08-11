@@ -9,17 +9,15 @@ import useTopics from "@/hooks/useTopics";
 
 const SearchPage = () => {
   const [keywords, setKeywords] = useState<string>("");
-  const { topics, loading, error, fetchTopics } = useTopics();
+  const { topics, loading, error } = useTopics();
   const [localTopics, setLocalTopics] = useState<string[]>([]);
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading) {
-      setLocalTopics([...topics]);
+    if (!loading && localTopics.length === 0) {
+      setLocalTopics(topics);
     }
-
-    fetchTopics();
-  }, [loading, topics]);
+  }, [localTopics, loading]);
 
   return (
     <div className="w-[40rem]">
@@ -48,7 +46,7 @@ const SearchPage = () => {
             <motion.div
               key={index}
               className="sm:h-44 h-24 flex justify-center 
-                         items-center rounded-lg text-lg sm:text-3xl 
+                         items-center rounded-lg overflow-clip text-xs sm:text-2xl 
                          font-bold hover:cursor-pointer bg-gradient-to-tl 
                          from-[#6F47FA] via-[#FFAEEB] to-white 
                          bg-[length:300%_300%] select-none"
