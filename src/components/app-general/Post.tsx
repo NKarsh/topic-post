@@ -18,7 +18,7 @@ const Post = ({
 
   const handleButtonClick = () => {
     setShowHeart(true);
-    setTimeout(() => setShowHeart(false), 2000); // Hide heart after 2 seconds
+    setTimeout(() => setShowHeart(false), 2000);
   };
   return (
     <motion.div

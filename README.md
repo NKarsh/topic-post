@@ -12,6 +12,8 @@ Welcome to **Topic Post** – a place where you can explore, express, and engage
 - ✏️ **Write Posts:** Share your thoughts by writing posts with a title and engaging content.
 - 👏 **Applaud Posts:** Show appreciation by giving applause to posts you love.
 
+To use setup MONGODB_URI and MONGODB_DB in your env file.
+
 ## 🤗 **Join the Fun**
 
 Simply choose a topic, write your post, and let the world see what you’ve got to say! You can also explore posts by others and give them a round of applause! 🎉
